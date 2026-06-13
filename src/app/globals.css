@@ -1,26 +1,93 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Design tokens ─────────────────────────────────────────────
+   Minecraft × Apple Vision Pro × Cyberpunk HUD.
+   Colors are literal so Tailwind generates utilities (bg-cyan-500, etc).
+   Fonts reference the next/font CSS vars injected in layout.tsx. */
+@theme {
+  --color-bg: #050816;
+  --color-bg-secondary: #0b1023;
+  --color-bg-elevated: #101a34;
+
+  --color-cyan-100: #ddfeff;
+  --color-cyan-200: #a8f7ff;
+  --color-cyan-300: #68efff;
+  --color-cyan-400: #2ae5ff;
+  --color-cyan-500: #00d9ff;
+  --color-cyan-600: #00b8e6;
+
+  --color-purple-300: #c58cff;
+  --color-purple-400: #a65eff;
+  --color-purple-500: #8a2eff;
+  --color-purple-600: #6b1fd1;
+
+  --color-success: #43ff9a;
+  --color-warning: #ffd54a;
+  --color-danger: #ff4d6d;
+
+  --color-text: #f5f7fa;
+  --color-muted: #8ea3c0;
+
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  /* Lenis drives scroll; keep native smooth off to avoid double-easing. */
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+/* ── HUD panel: clipped corners, glass, cyan edge ──────────────── */
+.hud-panel {
+  background: rgba(10, 16, 35, 0.55);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(0, 217, 255, 0.15);
+  clip-path: polygon(
+    12px 0,
+    100% 0,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    0 100%,
+    0 12px
+  );
+}
+
+.glow-cyan {
+  box-shadow:
+    0 0 10px rgba(0, 217, 255, 0.4),
+    0 0 30px rgba(0, 217, 255, 0.25),
+    0 0 60px rgba(0, 217, 255, 0.15);
+}
+
+.glow-purple {
+  box-shadow:
+    0 0 12px rgba(138, 46, 255, 0.4),
+    0 0 32px rgba(138, 46, 255, 0.25);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
 }
