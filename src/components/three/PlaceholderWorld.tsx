@@ -3,7 +3,8 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Group } from "three";
-import { CHAPTERS, ACCENT_HEX, type Chapter } from "@/config/chapters";
+import { CHAPTERS, ACCENT_HEX, ORIGIN_INDEX, type Chapter } from "@/config/chapters";
+import OriginScene from "./scenes/OriginScene";
 
 /** Deterministic pseudo-random so clusters are stable between renders. */
 function mulberry32(seed: number) {
@@ -79,9 +80,13 @@ function ClusterMesh({ chapter, index }: { chapter: Chapter; index: number }) {
 export default function PlaceholderWorld() {
   return (
     <>
-      {CHAPTERS.map((chapter, index) => (
-        <ClusterMesh key={chapter.id} chapter={chapter} index={index} />
-      ))}
+      {CHAPTERS.map((chapter, index) => {
+        // Intro (index 0): real autoplay world-gen scene is TBD — render nothing
+        // for now so its greybox cubes don't sit on top of the spawn camera.
+        if (index === 0) return null;
+        if (index === ORIGIN_INDEX) return <OriginScene key={chapter.id} />;
+        return <ClusterMesh key={chapter.id} chapter={chapter} index={index} />;
+      })}
     </>
   );
 }
