@@ -4,6 +4,8 @@ import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import CameraRig from "./CameraRig";
 import PlaceholderWorld from "./PlaceholderWorld";
+import IntroWorld from "./IntroWorld";
+import { usePhase } from "@/lib/phase";
 
 /**
  * Fixed full-viewport WebGL layer. The HUD and scroll spacer sit above it in
@@ -11,6 +13,7 @@ import PlaceholderWorld from "./PlaceholderWorld";
  * progress via CameraRig.
  */
 export default function Experience() {
+  const phase = usePhase();
   return (
     <div className="fixed inset-0 -z-10">
       <Canvas
@@ -28,6 +31,7 @@ export default function Experience() {
         <Stars radius={300} depth={120} count={4000} factor={5} fade speed={0.5} />
 
         <PlaceholderWorld />
+        {phase === "intro" && <IntroWorld />}
         <CameraRig />
       </Canvas>
     </div>

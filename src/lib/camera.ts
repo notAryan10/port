@@ -1,5 +1,5 @@
 import { Vector3 } from "three";
-import { CHAPTERS, type Pose } from "@/config/chapters";
+import { WORLD_CHAPTERS, type Pose } from "@/config/chapters";
 import { easeInOutCubic } from "@/lib/scroll";
 
 interface Keyframe {
@@ -15,9 +15,9 @@ interface Keyframe {
  * pose at their slice center.
  */
 function buildKeyframes(): Keyframe[] {
-  const n = CHAPTERS.length;
+  const n = WORLD_CHAPTERS.length;
   const kfs: Keyframe[] = [];
-  CHAPTERS.forEach((chapter, i) => {
+  WORLD_CHAPTERS.forEach((chapter, i) => {
     const poses: Pose[] =
       chapter.path ?? [
         { position: chapter.camera.position, lookAt: chapter.camera.lookAt, at: 0.5 },

@@ -1,4 +1,4 @@
-import { CHAPTERS } from "@/config/chapters";
+import { WORLD_CHAPTERS } from "@/config/chapters";
 
 /**
  * Single source of truth for scroll progress, written by the ScrollTrigger in
@@ -14,15 +14,15 @@ export function clamp01(x: number): number {
   return Math.min(1, Math.max(0, x));
 }
 
-/** Active chapter index — each chapter owns an equal 1/n slice of scroll. */
+/** Active world-chapter index — each owns an equal 1/n slice of scroll. */
 export function chapterIndexFromProgress(progress: number): number {
-  const n = CHAPTERS.length;
+  const n = WORLD_CHAPTERS.length;
   return Math.min(n - 1, Math.max(0, Math.floor(progress * n)));
 }
 
-/** Local 0→1 progress within a given chapter's scroll slice. */
+/** Local 0→1 progress within a given world-chapter's scroll slice. */
 export function chapterLocalProgress(index: number): number {
-  const n = CHAPTERS.length;
+  const n = WORLD_CHAPTERS.length;
   return clamp01((scrollState.progress - index / n) * n);
 }
 

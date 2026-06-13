@@ -15,11 +15,11 @@ import {
 } from "three";
 import { generateIsland, type Vec3 } from "@/lib/voxelIsland";
 import { chapterLocalProgress, clamp01 } from "@/lib/scroll";
-import { CHAPTERS, ORIGIN_INDEX } from "@/config/chapters";
+import { CHAPTERS, ORIGIN_INDEX, ORIGIN_WORLD_INDEX } from "@/config/chapters";
 
 const CYAN = "#00d9ff";
 const PURPLE = "#8a2eff";
-const localProgress = () => chapterLocalProgress(ORIGIN_INDEX);
+const localProgress = () => chapterLocalProgress(ORIGIN_WORLD_INDEX);
 
 /** Instanced set of unit blocks at the given positions. */
 function Blocks({

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { Vector3 } from "three";
 import { scrollState } from "@/lib/scroll";
 import { sampleCamera } from "@/lib/camera";
+import { getPhase } from "@/lib/phase";
 
 /**
  * Flies the camera along the global keyframe timeline based on scroll progress,
@@ -18,6 +19,9 @@ export default function CameraRig() {
   const init = useRef(false);
 
   useFrame((_, delta) => {
+    // During the intro autoplay, IntroWorld owns the camera.
+    if (getPhase() !== "world") return;
+
     sampleCamera(scrollState.progress, desiredPos.current, desiredLook.current);
 
     if (!init.current) {

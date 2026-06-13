@@ -1,19 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CHAPTERS } from "@/config/chapters";
+import { WORLD_CHAPTERS } from "@/config/chapters";
 import { scrollState, chapterIndexFromProgress } from "@/lib/scroll";
+import { usePhase } from "@/lib/phase";
 
 /**
  * DOM overlay. Polls scrollState on a rAF loop (never coupled to React state at
  * 60fps): the progress bar is mutated directly via ref, and chapter index is
- * lifted to state only when it actually changes.
+ * lifted to state only when it actually changes. Hidden during the intro.
  */
 export default function Hud() {
+  const phase = usePhase();
   const [active, setActive] = useState(0);
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (phase !== "world") return;
     let raf = 0;
     let last = -1;
     const loop = () => {
@@ -28,9 +31,11 @@ export default function Hud() {
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [phase]);
 
-  const chapter = CHAPTERS[active];
+  if (phase !== "world") return null;
+
+  const chapter = WORLD_CHAPTERS[active];
 
   return (
     <div className="pointer-events-none fixed inset-0 z-10 font-mono">
@@ -45,8 +50,8 @@ export default function Hud() {
           </div>
         </div>
         <nav className="hidden items-center gap-6 text-[0.7rem] tracking-[0.15em] md:flex">
-          {CHAPTERS.filter((c) => c.id !== "00").map((c, i) => {
-            const isActive = active === i + 1;
+          {WORLD_CHAPTERS.map((c, i) => {
+            const isActive = active === i;
             return (
               <span
                 key={c.id}
@@ -66,9 +71,9 @@ export default function Hud() {
       {/* Left chapter panel */}
       <div className="absolute left-6 top-1/2 max-w-[28rem] -translate-y-1/2 md:left-10">
         <div className="mb-3 text-[0.7rem] tracking-[0.3em] text-cyan-400">
-          {chapter.id === "00"
-            ? "INITIALIZING"
-            : `CHAPTER ${chapter.id} OF ${CHAPTERS.length - 1}`}
+          {active === WORLD_CHAPTERS.length - 1
+            ? "FINAL CHAPTER"
+            : `CHAPTER ${chapter.id} OF ${WORLD_CHAPTERS.length}`}
         </div>
         <h1 className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-text md:text-7xl">
           {chapter.title}

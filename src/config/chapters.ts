@@ -107,8 +107,17 @@ export const CHAPTERS: Chapter[] = [
   },
 ];
 
+/** All scenes including the Intro (index 0) — used for world-space placement. */
 export const ORIGIN_INDEX = 1;
 export const ORIGIN_CORE_POSITION = ORIGIN_CORE;
+
+/**
+ * The scroll-driven chapters (Origin → Future). The Intro is an autoplay phase
+ * outside the scroll range, so scroll progress 0 maps to Origin. Camera
+ * keyframes, scroll height, HUD nav, and the active-chapter index all use these.
+ */
+export const WORLD_CHAPTERS = CHAPTERS.slice(1);
+export const ORIGIN_WORLD_INDEX = 0;
 
 export const ACCENT_HEX: Record<Accent, string> = {
   cyan: "#00d9ff",
